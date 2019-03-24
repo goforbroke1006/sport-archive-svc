@@ -17,12 +17,14 @@ type GetSportResult struct {
 }
 
 type GetParticipantArgs struct {
-	Name string `json:"name"`
+	Name      string `json:"name"`
+	SportName string `json:"sport_name"`
 }
 
 type GetParticipantResult struct {
-	ID   uint64 `json:"id"`
-	Name string `json:"name"`
+	ID      uint64 `json:"id"`
+	Name    string `json:"name"`
+	SportID uint64 `json:"sport_id"`
 }
 
 type SportArchiveServiceEndpoint struct {
@@ -41,11 +43,6 @@ func (ep SportArchiveServiceEndpoint) GetSport(
 		return errors.New("not found")
 	}
 
-	//res = &GetSportResult{
-	//	ID:   sport.ID,
-	//	Name: sport.Name,
-	//}
-
 	res.ID = sport.ID
 	res.Name = sport.Name
 
@@ -56,16 +53,16 @@ func (ep SportArchiveServiceEndpoint) GetParticipant(
 	req *http.Request, args *GetParticipantArgs, res *GetParticipantResult,
 ) error {
 
-	prt, err := ep.svc.GetParticipant(args.Name)
+	prt, err := ep.svc.GetParticipant(args.Name, args.SportName)
 	if nil != err {
 		return err
 	}
 
 	res.ID = prt.ID
 	res.Name = prt.Name
+	res.SportID = uint64(prt.SportID.Int64)
 
 	return nil
-
 }
 
 func NewSportArchiveService(svc service.SportArchiveService) *SportArchiveServiceEndpoint {
