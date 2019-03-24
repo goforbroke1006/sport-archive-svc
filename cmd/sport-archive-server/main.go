@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"github.com/goforbroke1006/sport-archive-svc/pkg/endpoint"
 	"log"
 
 	"github.com/jinzhu/gorm"
@@ -49,6 +50,6 @@ func main() {
 	}
 
 	svc := service.NewSportArchiveService(db, *allowSaveData)
-
-	handler.HandleClientsRequests(*handleAddr, svc)
+	eps := endpoint.NewSportArchiveService(svc)
+	handler.HandleClientsRequests(*handleAddr, eps)
 }
