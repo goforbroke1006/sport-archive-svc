@@ -10,7 +10,7 @@ import (
 
 type SportArchiveService interface {
 	GetSport(name string) (*domain.Sport, error)
-	GetParticipant(name string) (*domain.Participant, error)
+	GetParticipant(name, sportName string) (*domain.Participant, error)
 }
 
 type sportArchiveService struct {
@@ -38,8 +38,29 @@ func (svc sportArchiveService) GetSport(name string) (*domain.Sport, error) {
 	return sport, nil
 }
 
-func (svc sportArchiveService) GetParticipant(name string) (*domain.Participant, error) {
-	panic("implement me")
+func (svc sportArchiveService) GetParticipant(name, sportName string) (*domain.Participant, error) {
+	sport, err := svc.GetSport(sportName)
+	if nil != err {
+		return nil, err
+	}
+
+	logger.Infof("Looking for participant: %s", name)
+
+	participant, err := dao.GetParticipantByName(svc.db, name)
+	if nil != err && err.Error() != "record not found" {
+		return nil, err
+	}
+	if nil == participant && svc.allowSaveData {
+		logger.Infof("Create participant: %s", name)
+		participant = &domain.Participant{Name: name, Sport: *sport}
+		if err := dao.CreateParticipant(svc.db, participant); nil != err {
+			return nil, err
+		}
+	}
+	if result := svc.db.Where(&domain.Participant{Name: name, Sport: *sport}).First(&participant); result.Error != nil {
+		return nil, result.Error
+	}
+	return participant, nil
 }
 
 func NewSportArchiveService(db *gorm.DB, allowSave bool) SportArchiveService {
