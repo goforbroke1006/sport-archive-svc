@@ -66,14 +66,16 @@ func (ldr initLoader) InitParticipantsList(filename string) error {
 			continue
 		}
 
-		sport, err := dao.GetSportByName(ldr.db, strings.Trim(parts[0], " "))
+		sportName := strings.ToLower(parts[0])
+		sport, err := dao.GetSportByName(ldr.db, strings.Trim(sportName, " "))
 		if err != nil {
 			log.Println("Error:", err.Error())
 			continue
 		}
 
+		participantName := strings.ToLower(parts[1])
 		participant := &domain.Participant{
-			Name: strings.Trim(parts[1], " "),
+			Name: strings.Trim(participantName, " "),
 			//SportID: sql.NullInt64{Int64: int64((*sport).ID)},
 			SportID: (*sport).ID,
 			Sport:   *sport,

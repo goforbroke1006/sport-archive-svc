@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/google/logger"
 	"github.com/jinzhu/gorm"
+	"strings"
 
 	"github.com/goforbroke1006/sport-archive-svc/pkg/dao"
 	"github.com/goforbroke1006/sport-archive-svc/pkg/domain"
@@ -20,6 +21,8 @@ type sportArchiveService struct {
 
 func (svc sportArchiveService) GetSport(name string) (*domain.Sport, error) {
 	logger.Infof("Looking for sport: %s", name)
+
+	name = strings.ToLower(name)
 
 	sport, err := dao.GetSportByName(svc.db, name)
 	if nil != err && err.Error() != "record not found" {
@@ -39,6 +42,7 @@ func (svc sportArchiveService) GetSport(name string) (*domain.Sport, error) {
 }
 
 func (svc sportArchiveService) GetParticipant(name, sportName string) (*domain.Participant, error) {
+	sportName = strings.ToLower(sportName)
 	sport, err := svc.GetSport(sportName)
 	if nil != err {
 		return nil, err
@@ -46,20 +50,24 @@ func (svc sportArchiveService) GetParticipant(name, sportName string) (*domain.P
 
 	logger.Infof("Looking for participant: %s", name)
 
-	participant, err := dao.GetParticipantByName(svc.db, name)
+	name = strings.ToLower(name)
+
+	participant, err := dao.GetParticipantByName(svc.db, name, sport.ID)
 	if nil != err && err.Error() != "record not found" {
 		return nil, err
 	}
 	if nil == participant && svc.allowSaveData {
 		logger.Infof("Create participant: %s", name)
-		participant = &domain.Participant{Name: name, Sport: *sport}
+		participant = &domain.Participant{
+			Name:    name,
+			SportID: sport.ID,
+			Sport:   *sport,
+		}
 		if err := dao.CreateParticipant(svc.db, participant); nil != err {
 			return nil, err
 		}
 	}
-	if result := svc.db.Where(&domain.Participant{Name: name, Sport: *sport}).First(&participant); result.Error != nil {
-		return nil, result.Error
-	}
+
 	return participant, nil
 }
 

@@ -31,9 +31,9 @@ func CreateParticipant(db *gorm.DB, ptn *domain.Participant) error {
 	return nil
 }
 
-func GetParticipantByName(db *gorm.DB, name string) (*domain.Participant, error) {
+func GetParticipantByName(db *gorm.DB, name string, sportID uint64) (*domain.Participant, error) {
 	var ptn domain.Participant
-	result := db.Where(&domain.Participant{Name: name}).First(&ptn)
+	result := db.Where(&domain.Participant{Name: name, SportID: sportID}).First(&ptn)
 	if result.Error != nil {
 		return nil, result.Error
 	}

@@ -23,10 +23,17 @@ Options
 | zipkin-addr   | http://127.0.0.1:9411 | Tracing tool address                                  |
 
 
-### Request sample
+### Request samples
 
 ```bash
 curl -X POST -H "Content-Type: application/json" \
     --url http://localhost:10001/rpc \
     -d '{"method":"SportArchiveService.GetSport","params":[{"name":"soccer"}],"id":"123"}'
+```
+
+
+```bash
+curl -X POST -H "Content-Type: application/json" \
+    --url http://localhost:10001/rpc \
+    -d '{"method":"SportArchiveService.GetParticipant","params":[{"name":"Chelsea","sport_name":"Soccer"}],"id":"123"}'
 ```
