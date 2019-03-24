@@ -29,6 +29,8 @@ Options
 curl -X POST -H "Content-Type: application/json" \
     --url http://localhost:10001/rpc \
     -d '{"method":"SportArchiveService.GetSport","params":[{"name":"soccer"}],"id":"123"}'
+
+# {"result":{"id":1,"name":"soccer"},"error":null,"id":"123"}
 ```
 
 
@@ -36,4 +38,6 @@ curl -X POST -H "Content-Type: application/json" \
 curl -X POST -H "Content-Type: application/json" \
     --url http://localhost:10001/rpc \
     -d '{"method":"SportArchiveService.GetParticipant","params":[{"name":"Chelsea","sport_name":"Soccer"}],"id":"123"}'
+
+# {"result":{"id":17,"name":"chelsea","type":"team","sport_id":1},"error":null,"id":"123"}
 ```
