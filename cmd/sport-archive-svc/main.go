@@ -22,7 +22,7 @@ import (
 
 var (
 	dbConnStr     = flag.String("db-conn", "./sport-archive.db", "")
-	handleAddr    = flag.String("serve-addr", "127.0.0.1:10001", "")
+	serveAddr     = flag.String("serve-addr", "0.0.0.0:8080", "")
 	allowSaveData = flag.Bool("allow-save", true, "")
 	logPath       = flag.String("log-path", "./access.log", "")
 	verbose       = flag.Bool("verbose", true, "Print info level logs to stdout")
@@ -43,9 +43,9 @@ func main() {
 	}
 	defer finalizeCloser(logFile)
 
-	defer logger.Init(serviceName, *verbose, true, logFile).Close()
+	defer logger.Init(serviceName, *verbose, false, logFile).Close()
 
-	port := http.ParsePortFromAddr(*handleAddr)
+	port := http.ParsePortFromAddr(*serveAddr)
 	tracer, err := trace.NewTracer(*zipkinAddr, serviceName, port)
 	if err != nil {
 		log.Fatal(err)
@@ -62,7 +62,7 @@ func main() {
 	svc := service.NewSportArchiveService(db, *allowSaveData)
 	eps := endpoint.NewSportArchiveService(svc)
 	handler.HandleClientsRequests(
-		*handleAddr,
+		*serveAddr,
 		eps,
 		zipkinhttp.NewServerMiddleware(
 			tracer,

@@ -15,13 +15,35 @@ Options
 | Arg           | Default value         | Description                                           |
 |---------------|-----------------------|-------------------------------------------------------|
 | db-conn       | ./sport-archive.db    | Address for handling                                  |
-| serve-addr    | 127.0.0.1:10001       | Address for handling                                  |
+| serve-addr    | 127.0.0.1:8080        | Address for handling                                  |
 | allow-save    | true                  | App will persist all unknown sports and participants  |
 | log-path      | ./access.log          | Log files location on disk                            |
 | verbose       | true                  | Print info level logs to stdout                       |
 |---------------|-----------------------|-------------------------------------------------------|
 | zipkin-addr   | http://127.0.0.1:9411 | Tracing tool address                                  |
 
+
+### Docker
+
+```bash
+docker run -d --name sport-archive-svc \
+    --restart=always \
+    -p 127.0.0.1:10001:8080 \
+    -v ~/volumes/sport-archive-svc/logs/:/app/logs/ \
+    -v ~/volumes/sport-archive-svc/data/:/app/data/ \
+    goforbroke1006/sport-archive-svc
+```
+
+```bash
+make build-linux-amd64 docker-build
+docker stop sport-archive-svc
+docker rm sport-archive-svc
+docker run -d -p 10001:8080 --name sport-archive-svc goforbroke1006/sport-archive-svc
+sleep 3
+docker logs sport-archive-svc
+
+#docker exec -it sport-archive-svc bash -l
+```
 
 ### Request samples
 
