@@ -1,64 +1,61 @@
-1  ; soccer ; Dallas Cowboys
-2  ; soccer ; Manchester United
-3  ; soccer ; New England Patriots
-4  ; soccer ; Arsenal
-5  ; soccer ; Washington Redskins
-6  ; soccer ; Houston Texans
-6  ; soccer ; Tottenham Hotspur
-8  ; soccer ; New York Knicks
-9  ; soccer ; Los Angeles Lakers
-10 ; soccer ; Manchester City
-11 ; soccer ; Real Madrid
-12 ; soccer ; Barcelona
-13 ; soccer ; New York Yankees
-14 ; soccer ; New York Giants
-15 ; soccer ; Golden State Warriors
-16 ; soccer ; Washington Redskins
-17 ; soccer ; Chelsea
-18 ; soccer ; Bayern Munich
-19 ; soccer ; Paris Saint-Germain
-20 ; soccer ; Liverpool
-21
+soccer ; Dallas Cowboys
+soccer ; Manchester United
+soccer ; New England Patriots
+soccer ; Arsenal
+soccer ; Washington Redskins
+soccer ; Houston Texans
+soccer ; Tottenham Hotspur
+soccer ; New York Knicks
+soccer ; Los Angeles Lakers
+soccer ; Manchester City
+soccer ; Real Madrid
+soccer ; Barcelona
+soccer ; New York Yankees
+soccer ; New York Giants
+soccer ; Golden State Warriors
+soccer ; Washington Redskins
+soccer ; Chelsea
+soccer ; Bayern Munich
+soccer ; Paris Saint-Germain
+soccer ; Liverpool
 
 
-
-Moto Clube MA
-Fortaleza CE
-Rampla Juniors FC
-Liverpool M.
-Real Frontera FC
-Atletico El Vigia
-SC Pisa
-Carrarese Calcio
-US Arezzo
-Piacenza Calcio
-Virtus Entella
-Robur Siena
-Yaracuyanos FC
-Atletico Furrial
-Inter de Limeira SP
-Atletico Linense SP
-Botafogo SP
-Oeste SP
-Novorizontino SP
-Palmeiras SP
-Santa Gema FC
-Plaza Amador
-SC Internacional
-Sao Francisco BA
-Tulsa Roughnecks FC
-Seattle Sounders II
-Godoy Cruz A.T.
-Deportivo Armenio
-Deportivo Pasto
-Millonarios FC
-Ayacucho FC
-Alianza Lima
-Atletico Paranaense
-Foz Do Iguacu Pr
-Escuela de Futbol de Guazapa
-Turin Fesa FC
-Uni. Catolica
-Palestino
-
+soccer ; Moto Clube MA
+soccer ; Fortaleza CE
+soccer ; Rampla Juniors FC
+soccer ; Liverpool M.
+soccer ; Real Frontera FC
+soccer ; Atletico El Vigia
+soccer ; SC Pisa
+soccer ; Carrarese Calcio
+soccer ; US Arezzo
+soccer ; Piacenza Calcio
+soccer ; Virtus Entella
+soccer ; Robur Siena
+soccer ; Yaracuyanos FC
+soccer ; Atletico Furrial
+soccer ; Inter de Limeira SP
+soccer ; Atletico Linense SP
+soccer ; Botafogo SP
+soccer ; Oeste SP
+soccer ; Novorizontino SP
+soccer ; Palmeiras SP
+soccer ; Santa Gema FC
+soccer ; Plaza Amador
+soccer ; SC Internacional
+soccer ; Sao Francisco BA
+soccer ; Tulsa Roughnecks FC
+soccer ; Seattle Sounders II
+soccer ; Godoy Cruz A.T.
+soccer ; Deportivo Armenio
+soccer ; Deportivo Pasto
+soccer ; Millonarios FC
+soccer ; Ayacucho FC
+soccer ; Alianza Lima
+soccer ; Atletico Paranaense
+soccer ; Foz Do Iguacu Pr
+soccer ; Escuela de Futbol de Guazapa
+soccer ; Turin Fesa FC
+soccer ; Uni. Catolica
+soccer ; Palestino
 

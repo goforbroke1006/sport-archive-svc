@@ -5,6 +5,8 @@ import (
 	"log"
 
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/goforbroke1006/sport-archive-svc/pkg/domain"
 	"github.com/goforbroke1006/sport-archive-svc/pkg/service"
@@ -15,6 +17,10 @@ var (
 	sportsFixturePath       = flag.String("sport-fixture", "", "")
 	participantsFixturePath = flag.String("participant-fixture", "", "")
 )
+
+func init() {
+	flag.Parse()
+}
 
 func main() {
 	db, err := gorm.Open("sqlite3", *dbConnStr)

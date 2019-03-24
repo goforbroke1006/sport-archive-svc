@@ -27,7 +27,7 @@ var (
 	logPath       = flag.String("log-path", "./access.log", "")
 	verbose       = flag.Bool("verbose", true, "Print info level logs to stdout")
 
-	zipkinAddr = flag.String("zipkin-host", "http://127.0.0.1:9411", "Select zipkin host")
+	zipkinAddr = flag.String("zipkin-addr", "http://127.0.0.1:9411", "Select zipkin host")
 )
 
 const serviceName = "sport-archive-svc"

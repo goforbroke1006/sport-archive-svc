@@ -24,7 +24,7 @@ func GetSportByName(db *gorm.DB, name string) (*domain.Sport, error) {
 }
 
 func CreateParticipant(db *gorm.DB, ptn *domain.Participant) error {
-	result := db.Create(domain.Participant{})
+	result := db.Create(ptn)
 	if result.Error != nil {
 		return result.Error
 	}

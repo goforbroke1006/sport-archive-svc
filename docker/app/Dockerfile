@@ -1,10 +1,11 @@
 FROM debian:jessie
 
-MAINTAINER Sergey Cherkesov
+MAINTAINER Sergey Cherkesov <go.for.broke1006@gmail.com>
 
+ARG BINARY_LOCATION
 ARG BINARY_NAME
 
-COPY ./build/Realise/sport-archive-svc /usr/local/bin/${BINARY_NAME}
+COPY ${BINARY_LOCATION} /usr/local/bin/${BINARY_NAME}
 
 WORKDIR /app/
 
@@ -16,7 +17,7 @@ EXPOSE 8080
 
 ENTRYPOINT [ "/usr/local/bin/${BINARY_NAME}", \
     "-db-conn",     "/app/data/sport-archive.db", \
-    "-handle-addr", ":8080", \
+    "-serve-addr",  ":8080", \
     "-allow-save",  "true", \
     "-log-path",    "/app/logs/access.log", \
     "" ]

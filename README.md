@@ -20,7 +20,7 @@ Options
 | log-path      | ./access.log          | Log files location on disk                            |
 | verbose       | true                  | Print info level logs to stdout                       |
 |---------------|-----------------------|-------------------------------------------------------|
-| zipkin-host   | http://127.0.0.1:9411 | Tracing tool address                                  |
+| zipkin-addr   | http://127.0.0.1:9411 | Tracing tool address                                  |
 
 
 ### Request sample

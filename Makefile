@@ -18,5 +18,5 @@ docker: build-linux-amd64 docker-push
 
 docker-push:
 	docker login
-	docker build --build-arg BINARY_NAME=${SERVICE_NAME} -f docker/app/Dockerfile -t ${DOCKER_IMAGE_NAME}:latest .
+	docker build --build-arg BINARY_LOCATION=${BUILD_PATH}/${SERVICE_NAME} --build-arg BINARY_NAME=${SERVICE_NAME} -f docker/app/Dockerfile -t ${DOCKER_IMAGE_NAME}:latest .
 	docker push ${DOCKER_IMAGE_NAME}:latest

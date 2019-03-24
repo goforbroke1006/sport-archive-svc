@@ -7,26 +7,6 @@ import (
 	"github.com/goforbroke1006/sport-archive-svc/pkg/service"
 )
 
-type GetSportArgs struct {
-	Name string `json:"name"`
-}
-
-type GetSportResult struct {
-	ID   uint64 `json:"id"`
-	Name string `json:"name"`
-}
-
-type GetParticipantArgs struct {
-	Name      string `json:"name"`
-	SportName string `json:"sport_name"`
-}
-
-type GetParticipantResult struct {
-	ID      uint64 `json:"id"`
-	Name    string `json:"name"`
-	SportID uint64 `json:"sport_id"`
-}
-
 type SportArchiveServiceEndpoint struct {
 	svc service.SportArchiveService
 }
@@ -60,7 +40,8 @@ func (ep SportArchiveServiceEndpoint) GetParticipant(
 
 	res.ID = prt.ID
 	res.Name = prt.Name
-	res.SportID = uint64(prt.SportID.Int64)
+	res.Type = prt.Type
+	res.SportID = prt.SportID
 
 	return nil
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"io/ioutil"
 	"log"
+	"strings"
 )
 
 type InitLoader interface {
@@ -33,7 +34,7 @@ func (ldr initLoader) InitSportsList(filename string) error {
 			break
 		}
 
-		lineStr := string(line)
+		lineStr := strings.ToLower(string(line))
 
 		err = dao.CreateSport(ldr.db, &domain.Sport{Name: lineStr})
 		if err != nil {
@@ -45,6 +46,45 @@ func (ldr initLoader) InitSportsList(filename string) error {
 }
 
 func (ldr initLoader) InitParticipantsList(filename string) error {
+	data, err := ioutil.ReadFile(filename)
+	if nil != err {
+		return err
+	}
+	buffer := bytes.NewBuffer(data)
+	reader := bufio.NewReader(buffer)
+
+	for {
+		line, _, err := reader.ReadLine()
+		if nil != err {
+			break
+		}
+
+		lineStr := strings.ToLower(string(line))
+		parts := strings.Split(lineStr, ";")
+
+		if len(parts) < 2 {
+			continue
+		}
+
+		sport, err := dao.GetSportByName(ldr.db, strings.Trim(parts[0], " "))
+		if err != nil {
+			log.Println("Error:", err.Error())
+			continue
+		}
+
+		participant := &domain.Participant{
+			Name: strings.Trim(parts[1], " "),
+			//SportID: sql.NullInt64{Int64: int64((*sport).ID)},
+			SportID: (*sport).ID,
+			Sport:   *sport,
+			Type:    domain.ParticipantTypeTeam,
+		}
+		err = dao.CreateParticipant(ldr.db, participant)
+		if err != nil {
+			log.Println("Error:", err.Error())
+		}
+	}
+
 	return nil
 }
 
