@@ -3,6 +3,7 @@ SERVICE_NAME=sport-archive-svc
 ENTRY_POINT=cmd/${SERVICE_NAME}/main.go
 
 DOCKER_IMAGE_NAME=goforbroke1006/sport-archive-svc
+TAG=1.0.0
 
 all: build
 
@@ -17,8 +18,9 @@ build-linux-386:
 docker: build-linux-amd64 docker-build docker-push
 
 docker-build:
-	docker build --no-cache --build-arg BINARY_LOCATION=${BUILD_PATH}/${SERVICE_NAME} --build-arg BINARY_NAME=${SERVICE_NAME} -f docker/app/Dockerfile -t ${DOCKER_IMAGE_NAME}:latest .
+	docker build --no-cache --build-arg BINARY_LOCATION=${BUILD_PATH}/${SERVICE_NAME} --build-arg BINARY_NAME=${SERVICE_NAME} -f docker/app/Dockerfile -t ${DOCKER_IMAGE_NAME}:${TAG} -t ${DOCKER_IMAGE_NAME}:latest .
 
 docker-push:
 	docker login
+	docker push ${DOCKER_IMAGE_NAME}:${TAG}
 	docker push ${DOCKER_IMAGE_NAME}:latest
