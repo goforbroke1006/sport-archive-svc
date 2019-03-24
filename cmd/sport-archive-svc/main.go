@@ -3,26 +3,34 @@ package main
 import (
 	"flag"
 	"io"
+	"log"
 	"os"
 
 	"github.com/google/logger"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	_ "github.com/mattn/go-sqlite3"
+	zipkinhttp "github.com/openzipkin/zipkin-go/middleware/http"
 
 	"github.com/goforbroke1006/sport-archive-svc/pkg/domain"
 	"github.com/goforbroke1006/sport-archive-svc/pkg/endpoint"
 	"github.com/goforbroke1006/sport-archive-svc/pkg/handler"
+	"github.com/goforbroke1006/sport-archive-svc/pkg/http"
 	"github.com/goforbroke1006/sport-archive-svc/pkg/service"
+	"github.com/goforbroke1006/sport-archive-svc/pkg/trace"
 )
 
 var (
 	dbConnStr     = flag.String("db-conn", "./sport-archive.db", "")
-	handleAddr    = flag.String("handle-addr", "127.0.0.1:10001", "")
-	allowSaveData = flag.Bool("allow-save", false, "")
+	handleAddr    = flag.String("serve-addr", "127.0.0.1:10001", "")
+	allowSaveData = flag.Bool("allow-save", true, "")
 	logPath       = flag.String("log-path", "./access.log", "")
-	verbose       = flag.Bool("verbose", true, "print info level logs to stdout")
+	verbose       = flag.Bool("verbose", true, "Print info level logs to stdout")
+
+	zipkinAddr = flag.String("zipkin-host", "http://127.0.0.1:9411", "Select zipkin host")
 )
+
+const serviceName = "sport-archive-svc"
 
 func init() {
 	flag.Parse()
@@ -35,7 +43,13 @@ func main() {
 	}
 	defer finalizeCloser(logFile)
 
-	defer logger.Init("sport-archive-svc", *verbose, true, logFile).Close()
+	defer logger.Init(serviceName, *verbose, true, logFile).Close()
+
+	port := http.ParsePortFromAddr(*handleAddr)
+	tracer, err := trace.NewTracer(*zipkinAddr, serviceName, port)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	db, err := gorm.Open("sqlite3", *dbConnStr)
 	if err != nil {
@@ -47,7 +61,14 @@ func main() {
 
 	svc := service.NewSportArchiveService(db, *allowSaveData)
 	eps := endpoint.NewSportArchiveService(svc)
-	handler.HandleClientsRequests(*handleAddr, eps)
+	handler.HandleClientsRequests(
+		*handleAddr,
+		eps,
+		zipkinhttp.NewServerMiddleware(
+			tracer,
+			zipkinhttp.SpanName("request"),
+		),
+	)
 }
 
 func finalizeCloser(c io.Closer) {
