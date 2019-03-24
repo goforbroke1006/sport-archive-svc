@@ -1,0 +1,5 @@
+1 soccer
+2 basketball
+3 rugby
+4 cricket
+5 baseball
