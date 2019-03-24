@@ -1,10 +1,10 @@
 package handler
 
 import (
-	"io"
 	"log"
 	"net/http"
 
+	"github.com/google/logger"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/rpc"
 	"github.com/gorilla/rpc/json"
@@ -12,22 +12,7 @@ import (
 	"github.com/goforbroke1006/sport-archive-svc/pkg/endpoint"
 )
 
-type HttpConn struct {
-	in  io.Reader
-	out io.Writer
-}
-
-func (c *HttpConn) Read(p []byte) (n int, err error) {
-	return c.in.Read(p)
-}
-
-func (c *HttpConn) Write(d []byte) (n int, err error) {
-	return c.out.Write(d)
-}
-
-func (c *HttpConn) Close() error {
-	return nil
-}
+const rpcUri = "/rpc"
 
 func HandleClientsRequests(handleAddr string, svc *endpoint.SportArchiveServiceEndpoint) {
 	server := rpc.NewServer()
@@ -40,6 +25,10 @@ func HandleClientsRequests(handleAddr string, svc *endpoint.SportArchiveServiceE
 	}
 
 	r := mux.NewRouter()
-	r.Handle("/rpc", server)
+	r.Handle(rpcUri, server)
+
+	logger.Infof("Start listen address: %s", handleAddr)
+	logger.Infof("Start listen path: %s", rpcUri)
+
 	log.Fatal(http.ListenAndServe(handleAddr, r))
 }

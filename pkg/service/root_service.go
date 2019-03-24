@@ -1,8 +1,10 @@
 package service
 
 import (
+	"github.com/google/logger"
 	"github.com/jinzhu/gorm"
 
+	"github.com/goforbroke1006/sport-archive-svc/pkg/dao"
 	"github.com/goforbroke1006/sport-archive-svc/pkg/domain"
 )
 
@@ -17,9 +19,23 @@ type sportArchiveService struct {
 }
 
 func (svc sportArchiveService) GetSport(name string) (*domain.Sport, error) {
-	var sport domain.Sport
-	svc.db.Where(&domain.Sport{Name: name}).First(&sport)
-	return &sport, nil
+	logger.Infof("Looking for sport: %s", name)
+
+	sport, err := dao.GetSportByName(svc.db, name)
+	if nil != err && err.Error() != "record not found" {
+		return nil, err
+	}
+	if nil == sport && svc.allowSaveData {
+		logger.Infof("Create sport: %s", name)
+		sport = &domain.Sport{Name: name}
+		if err := dao.CreateSport(svc.db, sport); nil != err {
+			return nil, err
+		}
+	}
+	if result := svc.db.Where(&domain.Sport{Name: name}).First(&sport); result.Error != nil {
+		return nil, result.Error
+	}
+	return sport, nil
 }
 
 func (svc sportArchiveService) GetParticipant(name string) (*domain.Participant, error) {

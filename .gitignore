@@ -1,5 +1,7 @@
 .idea/
 build/
+
 *.db
+*.log
 
 *.exe

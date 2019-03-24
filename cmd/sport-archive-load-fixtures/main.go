@@ -2,32 +2,22 @@ package main
 
 import (
 	"flag"
-	"github.com/goforbroke1006/sport-archive-svc/pkg/endpoint"
 	"log"
 
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/goforbroke1006/sport-archive-svc/pkg/domain"
-	"github.com/goforbroke1006/sport-archive-svc/pkg/handler"
 	"github.com/goforbroke1006/sport-archive-svc/pkg/service"
 )
 
 var (
-	handleAddr              = flag.String("handle-addr", "127.0.0.1:10001", "")
+	dbConnStr               = flag.String("db-conn", "./sport-archive.db", "")
 	sportsFixturePath       = flag.String("sport-fixture", "", "")
 	participantsFixturePath = flag.String("participant-fixture", "", "")
-	allowSaveData           = flag.Bool("allow-save", false, "")
 )
 
-func init() {
-	flag.Parse()
-}
-
 func main() {
-
-	db, err := gorm.Open("sqlite3", "prod.db")
+	db, err := gorm.Open("sqlite3", *dbConnStr)
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -48,8 +38,4 @@ func main() {
 			log.Fatalf("Failed load participants fixture '%s' %s", *participantsFixturePath, err)
 		}
 	}
-
-	svc := service.NewSportArchiveService(db, *allowSaveData)
-	eps := endpoint.NewSportArchiveService(svc)
-	handler.HandleClientsRequests(*handleAddr, eps)
 }

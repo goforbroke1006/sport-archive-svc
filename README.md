@@ -25,10 +25,5 @@ Options
 ```bash
 curl -X POST -H "Content-Type: application/json" \
     --url http://localhost:10001/rpc \
-    -d '
-{
-    "method":"SportArchiveService.GetSport",
-    "params":[{"name":"soccer"}],
-    "id":"123"
-}'
+    -d '{"method":"SportArchiveService.GetSport","params":[{"name":"soccer"}],"id":"123"}'
 ```

@@ -3,12 +3,11 @@ package service
 import (
 	"bufio"
 	"bytes"
-	"errors"
-	"fmt"
-	"io/ioutil"
-	"strings"
-
+	"github.com/goforbroke1006/sport-archive-svc/pkg/dao"
+	"github.com/goforbroke1006/sport-archive-svc/pkg/domain"
 	"github.com/jinzhu/gorm"
+	"io/ioutil"
+	"log"
 )
 
 type InitLoader interface {
@@ -35,10 +34,10 @@ func (ldr initLoader) InitSportsList(filename string) error {
 		}
 
 		lineStr := string(line)
-		parts := strings.Split(lineStr, " ")
 
-		if len(parts) < 2 {
-			return errors.New(fmt.Sprintf("wrong args for sport initialization : %s", lineStr))
+		err = dao.CreateSport(ldr.db, &domain.Sport{Name: lineStr})
+		if err != nil {
+			log.Println("Error:", err.Error())
 		}
 	}
 

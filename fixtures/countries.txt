@@ -26,7 +26,6 @@ Brunei
 Bulgaria
 Burkina Faso
 Burundi
-Advertisement
 Cabo Verde
 Cambodia
 Cameroon
@@ -49,7 +48,6 @@ Denmark
 Djibouti
 Dominica
 Dominican Republic
-Advertisement
 East Timor (Timor-Leste)
 Ecuador
 Egypt
@@ -196,3 +194,8 @@ Vietnam
 Yemen
 Zambia
 Zimbabwe
+
+England
+Scotland
+Northern Ireland
+Wales
