@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package sport_archive_v1;
+option go_package = "api/pb/v1";
+
+service SportArchive {
+    rpc FindParticipantByName(FindParticipantByNameArg) returns (FindParticipantByNameRes);
+}
+
+message FindParticipantByNameArg {
+    string name = 1;
+}
+
+message FindParticipantByNameRes {
+    uint64 id = 1;
+    string name = 2;
+}
